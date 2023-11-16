@@ -1,5 +1,8 @@
 use anyhow::{Context, Result};
+use reqwest::header::HeaderMap;
 use reqwest::blocking;
+use reqwest::header::HeaderName;
+use reqwest::header::HeaderValue;
 use serde_json;
 use std::fs;
 use std::io::prelude::*;
@@ -13,11 +16,19 @@ pub fn client_main() {
     }
 }
 fn process_client() -> Result<()> {
+    let get_choices = data_choices();
     let url = get_url()?;
-    let header = get_header()?;
-    dbg!(url);
-    dbg!(header);
+    let get_header = get_header()?;
+    let header = build_header(&get_header)?;
+    let client = build_client(header)?;
+    let make_req = process_req(&client, &url)?;
+    // let save_response = save_resp(make_req)?;
     Ok(())
+}
+fn data_choices() {
+    let commodity: &str;
+    let date: &str;
+    
 }
 fn get_url() -> Result<String> {
     let filename = "url.txt";
@@ -40,4 +51,29 @@ fn get_header() -> Result<serde_json::Value> {
     let v =
         serde_json::from_slice(&header).with_context(|| format!("Error parsing header to json"))?;
     Ok(v)
+}
+fn build_header(value: &serde_json::Value) -> Result<HeaderMap>{
+    let mut header = HeaderMap::new();
+    let v = value.as_object();
+    if let Some(kv) = v {
+        for (key, value) in kv {
+            let bytes_key = key.as_bytes();
+            let str_val = value.as_str().with_context(|| format!("Failed converting header value to &str"))?;
+            header.insert(
+                HeaderName::from_bytes(bytes_key)?, HeaderValue::from_str(str_val)?
+            );
+        }
+    }
+    Ok(header)
+}
+fn build_client(headers: HeaderMap) -> Result<blocking::Client>{
+    let c = blocking::Client::builder()
+        .default_headers(headers)
+        .build()?;
+    Ok(c)
+}
+fn process_req(client: &blocking::Client, url: &String) -> Result<blocking::Response> {
+    let resp = client.get(url).send()?;
+    // let own_resp = resp.by_ref();
+    Ok(resp)
 }
