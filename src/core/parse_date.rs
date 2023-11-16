@@ -10,7 +10,7 @@ pub fn parser_main() {
     }
     println!("{p:?}");
 }
-fn parser(date: &str) -> Result<HashMap<&str, u32>> {
+pub fn parser(date: &str) -> Result<HashMap<&str, u32>> {
     let date = date;
     let parse_local = dateparser::datetime::Parse::new(&Local, None);
     let r = parse_local.parse(date)?;
