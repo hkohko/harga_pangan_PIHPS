@@ -1,7 +1,7 @@
+use anyhow::Result;
+use chrono::prelude::*;
 use dateparser;
 use std::collections::HashMap;
-use chrono::prelude::*;
-use anyhow::Result;
 pub fn parser_main() {
     let date = "23 sep 2023";
     let p = parser(date);
@@ -9,9 +9,8 @@ pub fn parser_main() {
         println!("{e}");
     }
     println!("{p:?}");
-
 }
-fn parser(date: &str) -> Result<HashMap<&str, u32>>{
+fn parser(date: &str) -> Result<HashMap<&str, u32>> {
     let date = date;
     let parse_local = dateparser::datetime::Parse::new(&Local, None);
     let r = parse_local.parse(date)?;

@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
-use reqwest::header::HeaderMap;
 use reqwest::blocking;
+use reqwest::header::HeaderMap;
 use reqwest::header::HeaderName;
 use reqwest::header::HeaderValue;
 use serde_json;
@@ -28,7 +28,6 @@ fn process_client() -> Result<()> {
 fn data_choices() {
     let commodity: &str;
     let date: &str;
-    
 }
 fn get_url() -> Result<String> {
     let filename = "url.txt";
@@ -52,21 +51,24 @@ fn get_header() -> Result<serde_json::Value> {
         serde_json::from_slice(&header).with_context(|| format!("Error parsing header to json"))?;
     Ok(v)
 }
-fn build_header(value: &serde_json::Value) -> Result<HeaderMap>{
+fn build_header(value: &serde_json::Value) -> Result<HeaderMap> {
     let mut header = HeaderMap::new();
     let v = value.as_object();
     if let Some(kv) = v {
         for (key, value) in kv {
             let bytes_key = key.as_bytes();
-            let str_val = value.as_str().with_context(|| format!("Failed converting header value to &str"))?;
+            let str_val = value
+                .as_str()
+                .with_context(|| format!("Failed converting header value to &str"))?;
             header.insert(
-                HeaderName::from_bytes(bytes_key)?, HeaderValue::from_str(str_val)?
+                HeaderName::from_bytes(bytes_key)?,
+                HeaderValue::from_str(str_val)?,
             );
         }
     }
     Ok(header)
 }
-fn build_client(headers: HeaderMap) -> Result<blocking::Client>{
+fn build_client(headers: HeaderMap) -> Result<blocking::Client> {
     let c = blocking::Client::builder()
         .default_headers(headers)
         .build()?;
