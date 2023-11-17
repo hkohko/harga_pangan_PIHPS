@@ -1,4 +1,4 @@
-#![allow(dead_code, unused_imports, unused_variable)]
+#![allow(dead_code, unused_imports, unused_variables)]
 use std::path::PathBuf;
 use anyhow::Result;
 use std::io::BufWriter;
