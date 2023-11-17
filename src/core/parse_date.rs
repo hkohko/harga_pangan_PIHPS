@@ -16,7 +16,7 @@ pub fn parser(date: &str) -> Result<HashMap<&str, u32>> {
     let mut map = HashMap::new();
     let d = r.day();
     let m = r.month();
-    let y = r.year() as u32;
+    let y = u32::try_from(r.year()).unwrap_or_else(|e| panic!("Unable to convert to u32 from {}\n{e}", r.year()));
     map.insert("d", d);
     map.insert("m", m);
     map.insert("y", y);
