@@ -12,7 +12,7 @@ pub fn parser_main() {
 }
 pub fn parser(date: &str) -> Result<HashMap<&str, u32>> {
     let parse_local = dateparser::datetime::Parse::new(&Local, None);
-    let r = parse_local.parse(date)?;
+    let r = parse_local.parse(date).unwrap_or_else(|e| panic!("{e}"));
     let mut map = HashMap::new();
     let d = r.day();
     let m = r.month();
