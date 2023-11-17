@@ -1,22 +1,21 @@
+#![allow(dead_code, unused_variables)]
 use anyhow::{Context, Result};
 use reqwest::blocking;
-use reqwest::header::HeaderMap;
-use reqwest::header::HeaderName;
-use reqwest::header::HeaderValue;
+use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use serde_json;
 use std::fs;
 use std::io::prelude::*;
 use std::io::BufReader;
-
+use std::collections::HashMap;
 use crate::core::path::ProjPaths;
 
-pub fn client_main() {
-    if let Err(e) = process_client() {
+pub fn client_main(date: &HashMap<&str, u32>) {
+    if let Err(e) = process_client(date) {
         println!("{e}");
     }
 }
-fn process_client() -> Result<()> {
-    let get_choices = data_choices();
+fn process_client(date: &HashMap<&str, u32>) -> Result<()> {
+    let get_choices = data_choices(date);
     let url = get_url()?;
     let get_header = get_header()?;
     let header = build_header(&get_header)?;
@@ -25,7 +24,7 @@ fn process_client() -> Result<()> {
     // let save_response = save_resp(make_req)?;
     Ok(())
 }
-fn data_choices() {
+fn data_choices(date: &HashMap<&str, u32>) {
     let commodity: &str;
     let date: &str;
 }
