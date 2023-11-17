@@ -4,11 +4,11 @@ use anyhow::{Context, Result};
 use reqwest::blocking;
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use serde_json;
+use serde_json::Value;
 use std::collections::HashMap;
 use std::fs;
 use std::io::prelude::*;
 use std::io::BufReader;
-use serde_json::Value;
 
 pub fn client_main(date: &HashMap<&str, u32>) {
     if let Err(e) = process_client(date) {
@@ -30,11 +30,11 @@ fn data_choices(date: &HashMap<&str, u32>, raw_url: &String) -> Result<()> {
         let mut month_list = String::new();
         let mut file_month_path = ProjPaths::res_path()?;
         file_month_path.push("month.json");
-        let f_month = fs::File::open(file_month_path).with_context(|| format!("Failed to open month.json"))?;
+        let f_month = fs::File::open(file_month_path)
+            .with_context(|| format!("Failed to open month.json"))?;
         let mut reader = BufReader::new(f_month);
         reader.read_to_string(&mut month_list)?;
-        let month_as_serde_val: Value =
-            serde_json::from_str(month_list.as_str())?;
+        let month_as_serde_val: Value = serde_json::from_str(month_list.as_str())?;
         Ok(month_as_serde_val)
     };
     let to_month_dict = |m_val: &Value| -> Result<Value> {
@@ -46,7 +46,8 @@ fn data_choices(date: &HashMap<&str, u32>, raw_url: &String) -> Result<()> {
     let month_obj_serde: Value = retval_month()?;
     let month_array_serde: Value = to_month_dict(&month_obj_serde)?;
     let input_month = date.get("m").unwrap();
-    let own_input_month = usize::try_from(input_month.clone()).expect("can't convert input_month to usize");
+    let own_input_month =
+        usize::try_from(input_month.clone()).expect("can't convert input_month to usize");
     let month_array = month_array_serde.as_array().unwrap();
     let month_name = &month_array[own_input_month - 1];
     let month_name_asstr = month_name.as_str().unwrap();
@@ -54,7 +55,6 @@ fn data_choices(date: &HashMap<&str, u32>, raw_url: &String) -> Result<()> {
     let first3 = &name_as_vec[0..3];
     let w: &String = &first3.iter().collect();
     Ok(())
-
 }
 fn get_url() -> Result<String> {
     let filename = "url.txt";
