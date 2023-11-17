@@ -42,18 +42,22 @@ fn data_choices(date: &HashMap<&str, u32>, raw_url: &String) -> Result<()> {
         let month_names = month_obj.get("month_date").unwrap();
         Ok(month_names.clone())
     };
-
-    let month_obj_serde: Value = retval_month()?;
-    let month_array_serde: Value = to_month_dict(&month_obj_serde)?;
-    let input_month = date.get("m").unwrap();
-    let own_input_month =
-        usize::try_from(input_month.clone()).expect("can't convert input_month to usize");
-    let month_array = month_array_serde.as_array().unwrap();
-    let month_name = &month_array[own_input_month - 1];
-    let month_name_asstr = month_name.as_str().unwrap();
-    let name_as_vec: Vec<char> = month_name_asstr.chars().collect();
-    let first3 = &name_as_vec[0..3];
-    let w: &String = &first3.iter().collect();
+    let get_month = || -> Result<String> {
+        let month_obj_serde: Value = retval_month()?;
+        let month_array_serde: Value = to_month_dict(&month_obj_serde)?;
+        let input_month = date.get("m").unwrap();
+        let own_input_month =
+            usize::try_from(input_month.clone()).expect("can't convert input_month to usize");
+        let month_array = month_array_serde.as_array().unwrap();
+        let month_name = &month_array[own_input_month - 1];
+        let month_name_asstr = month_name.as_str().unwrap();
+        let name_as_vec: Vec<char> = month_name_asstr.chars().collect();
+        let first3 = &name_as_vec[0..3];
+        let w: &String = &first3.iter().collect();
+        Ok(w.to_owned())
+    };
+    let r = get_month()?;
+    dbg!(r);
     Ok(())
 }
 fn get_url() -> Result<String> {
