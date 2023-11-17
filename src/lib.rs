@@ -6,3 +6,6 @@ pub mod core {
 pub mod input {
     pub mod handle_input;
 }
+pub mod optional {
+    pub mod opt;
+}
