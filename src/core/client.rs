@@ -15,7 +15,6 @@ pub fn client_main(date: &HashMap<&str, u32>) {
     }
 }
 fn process_client(date: &HashMap<&str, u32>) -> Result<()> {
-
     let raw_url = get_url()?;
     let url = data_choices(date, &raw_url);
     // let get_header = get_header()?;
@@ -35,7 +34,8 @@ fn data_choices(date: &HashMap<&str, u32>, raw_url: &String) -> Result<()> {
         let f_month = fs::File::open(file_month_path)?;
         let mut reader = BufReader::new(f_month);
         reader.read_to_string(&mut month_list)?;
-        let month_as_serde_val: serde_json::Value = serde_json::from_str(month_list.as_str()).unwrap();
+        let month_as_serde_val: serde_json::Value =
+            serde_json::from_str(month_list.as_str()).unwrap();
         Ok(month_as_serde_val)
     };
     let to_month_dict = |m_val: &serde_json::Value| -> Result<serde_json::Value> {
