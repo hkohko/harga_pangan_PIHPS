@@ -5,7 +5,7 @@ use std::io::prelude::*;
 use std::io::BufWriter;
 use std::path::PathBuf;
 
-fn write_months_to_json_file() -> Result<()> {
+pub fn write_months_to_json_file() -> Result<()> {
     #[derive(Debug, serde::Serialize)]
     struct Months {
         month_date: Vec<String>,
@@ -26,7 +26,7 @@ fn write_months_to_json_file() -> Result<()> {
     ];
     let mut content: Vec<String> = Vec::new();
     for n in &m {
-        let _ = &content.push(format!("{n} "));
+        let _ = &content.push(n.to_string());
     }
     let month_struct = Months {
         month_date: content,
