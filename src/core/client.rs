@@ -1,13 +1,13 @@
 #![allow(dead_code, unused_variables)]
+use crate::core::path::ProjPaths;
 use anyhow::{Context, Result};
 use reqwest::blocking;
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use serde_json;
+use std::collections::HashMap;
 use std::fs;
 use std::io::prelude::*;
 use std::io::BufReader;
-use std::collections::HashMap;
-use crate::core::path::ProjPaths;
 
 pub fn client_main(date: &HashMap<&str, u32>) {
     if let Err(e) = process_client(date) {
