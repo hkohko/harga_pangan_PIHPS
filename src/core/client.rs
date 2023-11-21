@@ -8,7 +8,7 @@ use serde_json;
 use std::collections::HashMap;
 use std::fs;
 use std::io::prelude::*;
-use std::io::BufReader;
+use std::io::{BufReader, BufWriter};
 
 pub fn client_main(date: &HashMap<&str, u32>, cmdt_code: &String) {
     if let Err(e) = process_client(date, cmdt_code) {
@@ -17,12 +17,12 @@ pub fn client_main(date: &HashMap<&str, u32>, cmdt_code: &String) {
 }
 fn process_client(date: &HashMap<&str, u32>, cmdt_code: &String) -> Result<()> {
     let raw_url = get_url()?;
-    let url = data_choices(date, &raw_url, cmdt_code);
-    // let get_header = get_header()?;
-    // let header = build_header(&get_header)?;
-    // let client = build_client(header)?;
-    // let make_req = process_req(&client, &url)?;
-    // let save_response = save_resp(make_req)?;
+    let url = data_choices(date, &raw_url, cmdt_code)?;
+    let get_header = get_header()?;
+    let header = build_header(&get_header)?;
+    let client = build_client(header)?;
+    let make_req = process_req(&client, &url)?;
+    let save_response = save_resp(make_req)?;
     Ok(())
 }
 fn get_url() -> Result<String> {
@@ -72,6 +72,14 @@ fn build_client(headers: HeaderMap) -> Result<blocking::Client> {
 }
 fn process_req(client: &blocking::Client, url: &String) -> Result<blocking::Response> {
     let resp = client.get(url).send()?;
-    // let own_resp = resp.by_ref();
     Ok(resp)
+}
+fn save_resp(resp: blocking::Response) -> Result<()>{
+    let text = resp.text()?;
+    let mut filepath = ProjPaths::res_path()?;
+    filepath.push("result.json");
+    let f = fs::File::create(&filepath)?;
+    let mut writer = BufWriter::new(&f);
+    let _ = writer.write(&text.as_bytes())?;
+    Ok(())
 }
