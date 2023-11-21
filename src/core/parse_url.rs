@@ -7,14 +7,6 @@ use std::fs;
 use std::io::prelude::*;
 use std::io::BufReader;
 
-pub fn data_choices(
-    date: &HashMap<&str, u32>,
-    raw_url: &String,
-    cmdt_code: &String,
-) -> Result<String> {
-    let r = regex_url(raw_url, date, cmdt_code)?;
-    Ok(r)
-}
 fn get_month(date: &HashMap<&str, u32>) -> Result<String> {
     let to_month_dict = |m_val: &Value| -> Result<Value> {
         let month_obj = m_val.as_object().unwrap();
@@ -47,7 +39,7 @@ fn get_month(date: &HashMap<&str, u32>) -> Result<String> {
     Ok(w.to_owned())
 }
 
-fn regex_url(url: &String, date: &HashMap<&str, u32>, cmdt_code: &String) -> Result<String> {
+pub fn regex_url(url: &String, date: &HashMap<&str, u32>, cmdt_code: &String) -> Result<String> {
     let d = date.get("d").unwrap().to_string();
     let m = get_month(date)?.to_string();
     let y = date.get("y").unwrap().to_string();

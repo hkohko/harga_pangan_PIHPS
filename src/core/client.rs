@@ -1,5 +1,5 @@
 #![allow(dead_code, unused_variables)]
-use crate::core::parse_url::data_choices;
+use crate::core::parse_url::regex_url;
 use crate::core::path::ProjPaths;
 use anyhow::{Context, Result};
 use reqwest::blocking;
@@ -17,12 +17,12 @@ pub fn client_main(date: &HashMap<&str, u32>, cmdt_code: &String) {
 }
 fn process_client(date: &HashMap<&str, u32>, cmdt_code: &String) -> Result<()> {
     let raw_url = get_url()?;
-    let url = data_choices(date, &raw_url, cmdt_code)?;
+    let url = regex_url(&raw_url, date, cmdt_code)?;
     let get_header = get_header()?;
     let header = build_header(&get_header)?;
     let client = build_client(header)?;
     let make_req = process_req(&client, &url)?;
-    let save_response = save_resp(make_req)?;
+    let _ = save_resp(make_req)?;
     Ok(())
 }
 fn get_url() -> Result<String> {
