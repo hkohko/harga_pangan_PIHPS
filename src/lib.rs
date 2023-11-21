@@ -1,6 +1,7 @@
 pub mod core {
     pub mod client;
     pub mod parse_date;
+    pub mod parse_url;
     pub mod path;
 }
 pub mod input {

@@ -1,16 +1,18 @@
 use anyhow::Result;
 use std::io;
+
 pub fn input_main() {
-    let _ = sanitize();
+
 }
-pub fn sanitize() -> Result<String> {
-    // accepted date: dd mmm yyyy
-    let i = input()?;
-    let trim = i.trim();
-    Ok(trim.to_string())
-}
-fn input() -> Result<String> {
+pub fn input() -> Result<Vec<String>> {
     let mut x = String::new();
+    let mut y = String::new();
+   
+    println!("Input date: ");
     io::stdin().read_line(&mut x)?;
-    Ok(x)
+    println!("Input commodity code: ");
+    io::stdin().read_line(&mut y)?;
+
+    let arg_vec = vec![x.trim().to_owned(), y.trim().to_owned()];
+    Ok(arg_vec)
 }
