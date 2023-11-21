@@ -7,7 +7,11 @@ use std::fs;
 use std::io::prelude::*;
 use std::io::BufReader;
 
-pub fn data_choices(date: &HashMap<&str, u32>, raw_url: &String, cmdt_code: &String) -> Result<String> {
+pub fn data_choices(
+    date: &HashMap<&str, u32>,
+    raw_url: &String,
+    cmdt_code: &String,
+) -> Result<String> {
     let r = regex_url(raw_url, date, cmdt_code)?;
     Ok(r)
 }

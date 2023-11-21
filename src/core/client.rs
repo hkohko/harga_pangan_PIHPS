@@ -74,7 +74,7 @@ fn process_req(client: &blocking::Client, url: &String) -> Result<blocking::Resp
     let resp = client.get(url).send()?;
     Ok(resp)
 }
-fn save_resp(resp: blocking::Response) -> Result<()>{
+fn save_resp(resp: blocking::Response) -> Result<()> {
     let text = resp.text()?;
     let mut filepath = ProjPaths::res_path()?;
     filepath.push("result.json");
