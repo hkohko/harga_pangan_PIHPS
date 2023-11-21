@@ -72,6 +72,10 @@ fn build_client(headers: HeaderMap) -> Result<blocking::Client> {
 }
 fn process_req(client: &blocking::Client, url: &String) -> Result<blocking::Response> {
     let resp = client.get(url).send()?;
+    let st_code = resp.status().as_u16();
+    if st_code != 200 {
+        panic!("Non-200 status code");
+    }
     Ok(resp)
 }
 fn save_resp(resp: blocking::Response) -> Result<()> {
