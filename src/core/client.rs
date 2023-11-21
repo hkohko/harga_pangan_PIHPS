@@ -1,4 +1,5 @@
 #![allow(dead_code, unused_variables)]
+use crate::core::parse_url::data_choices;
 use crate::core::path::ProjPaths;
 use anyhow::{Context, Result};
 use reqwest::blocking;
@@ -8,7 +9,6 @@ use std::collections::HashMap;
 use std::fs;
 use std::io::prelude::*;
 use std::io::BufReader;
-use crate::core::parse_url::data_choices;
 
 pub fn client_main(date: &HashMap<&str, u32>, cmdt_code: &String) {
     if let Err(e) = process_client(date, cmdt_code) {

@@ -1,11 +1,11 @@
-use std::collections::HashMap;
-use std::io::BufReader;
-use serde_json::Value;
-use anyhow::{Result, Context};
+use crate::core::path::ProjPaths;
+use anyhow::{Context, Result};
 use regex::Regex;
+use serde_json::Value;
+use std::collections::HashMap;
 use std::fs;
 use std::io::prelude::*;
-use crate::core::path::ProjPaths;
+use std::io::BufReader;
 
 pub fn data_choices(date: &HashMap<&str, u32>, raw_url: &String, cmdt_code: &String) -> Result<()> {
     let retval_month = || -> Result<Value> {
@@ -42,7 +42,7 @@ pub fn data_choices(date: &HashMap<&str, u32>, raw_url: &String, cmdt_code: &Str
         let d = date.get("d").unwrap().to_string();
         let m = get_month()?.to_string();
         let y = date.get("y").unwrap().to_string();
-        
+
         let date_pattern = r"(?<dq>tanggal=)\d+%20\w+%20\d+";
         let commodity_pattern = r"(?<cmdt>commodity=)\w+&";
 
@@ -57,6 +57,6 @@ pub fn data_choices(date: &HashMap<&str, u32>, raw_url: &String, cmdt_code: &Str
         Ok(())
     };
     let r = regex_url(raw_url)?;
-    
+
     Ok(())
 }

@@ -1,13 +1,11 @@
 use anyhow::Result;
 use std::io;
 
-pub fn input_main() {
-
-}
+pub fn input_main() {}
 pub fn input() -> Result<Vec<String>> {
     let mut x = String::new();
     let mut y = String::new();
-   
+
     println!("Input date: ");
     io::stdin().read_line(&mut x)?;
     println!("Input commodity code: ");
