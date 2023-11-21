@@ -1,7 +1,7 @@
+use crate::data::constants::MONTH;
 use anyhow::Result;
 use regex::Regex;
 use std::collections::HashMap;
-use crate::data::constants::MONTH;
 
 fn get_month(date: &HashMap<&str, u32>) -> Result<String> {
     let input_month = date.get("m").unwrap();
