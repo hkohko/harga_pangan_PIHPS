@@ -271,6 +271,7 @@ dependencies = [
  "anyhow",
  "chrono",
  "dateparser",
+ "regex",
  "reqwest",
  "serde",
  "serde_json",
