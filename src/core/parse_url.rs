@@ -1,58 +1,24 @@
-use crate::core::path::ProjPaths;
-use anyhow::{Context, Result};
+use anyhow::Result;
 use regex::Regex;
-use serde_json::Value;
 use std::collections::HashMap;
-use std::fs;
-use std::io::prelude::*;
-use std::io::BufReader;
+use crate::data::constants::MONTH;
 
 fn get_month(date: &HashMap<&str, u32>) -> Result<String> {
-    let to_month_dict = |m_val: &Value| -> Result<Value> {
-        // Deserialize serde_json::Value into Rust object
-        let month_obj = m_val.as_object().unwrap();
-        let month_names = month_obj.get("month_date").unwrap();
-        Ok(month_names.clone())
-    };
-    let retval_month = || -> Result<Value> {
-        // Get an array of month names from month.json, serialize it as serde_json::Value
-        let mut month_list = String::new();
-        let mut file_month_path = ProjPaths::res_path()?;
-        file_month_path.push("month.json");
-        let f_month = fs::File::open(file_month_path)
-            .with_context(|| format!("Failed to open month.json"))?;
-        let mut reader = BufReader::new(f_month);
-        reader.read_to_string(&mut month_list)?;
-        let month_as_serde_val: Value = serde_json::from_str(month_list.as_str())?;
-        Ok(month_as_serde_val)
-    };
-
-    let month_obj_serde: Value = retval_month()?;
-    let month_array_serde: Value = to_month_dict(&month_obj_serde)?;
     let input_month = date.get("m").unwrap();
     // Index `month_array`  with `own_input_month`
     let own_input_month =
         usize::try_from(input_month.clone()).expect("can't convert input_month to usize");
-    let month_array = month_array_serde.as_array().unwrap();
-    let month_name = &month_array[own_input_month - 1];
+    let month_name = MONTH[own_input_month - 1].to_owned();
     // Get the first 3 letters of the month name "January" -> "Jan"
-    let month_name_asstr = month_name.as_str().unwrap();
-    let name_as_vec: Vec<char> = month_name_asstr.chars().collect();
-    let first3 = &name_as_vec[0..3];
-    let w: &String = &first3.iter().collect();
-    Ok(w.to_owned())
+    Ok(month_name.chars().take(3).collect())
 }
-
 pub fn regex_url(url: &String, date: &HashMap<&str, u32>, cmdt_code: &String) -> Result<String> {
     let d = date.get("d").unwrap().to_string();
     let m = get_month(date)?.to_string();
     let y = date.get("y").unwrap().to_string();
 
-    let date_pattern = r"(?<dq>tanggal=)\d+%20\w+%20\d+";
-    let commodity_pattern = r"(?<cmdt>commodity=)\w+&";
-
-    let date_regex = Regex::new(date_pattern)?;
-    let cmdt_regex = Regex::new(commodity_pattern)?;
+    let date_regex = Regex::new(r"(?<dq>tanggal=)\d+%20\w+%20\d+")?;
+    let cmdt_regex = Regex::new(r"(?<cmdt>commodity=)\w+&")?;
     let date_re_fmt = format!("${{dq}}{d}%20{m}%20{y}");
     let cmdt_re_fmt = format!("${{cmdt}}{cmdt_code}&");
 

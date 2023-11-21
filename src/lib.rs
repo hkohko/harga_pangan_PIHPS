@@ -10,3 +10,6 @@ pub mod input {
 pub mod optional {
     pub mod opt;
 }
+pub mod data {
+    pub mod constants;
+}
