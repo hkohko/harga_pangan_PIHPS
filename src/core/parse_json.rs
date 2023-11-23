@@ -1,7 +1,7 @@
 use crate::core::path::ProjPaths;
 use crate::ResultObjects;
-use num_format::{Locale, ToFormattedString};
 use anyhow::Result;
+use num_format::{Locale, ToFormattedString};
 use serde_json;
 use std::fs;
 use std::io::{prelude::*, BufReader};
@@ -28,7 +28,10 @@ fn parse(prov: &String) -> Result<()> {
                 let to_u32 = obj.Nilai as u32;
                 &to_u32.to_formatted_string(&Locale::en)
             };
-            let to_print = format!("{} di {}:\nRp{}", &obj.Komoditas, &obj.Provinsi, &nilai_formatted);
+            let to_print = format!(
+                "{} di {}:\nRp{}",
+                &obj.Komoditas, &obj.Provinsi, &nilai_formatted
+            );
             s.push_str(to_print.as_str())
         }
     }
