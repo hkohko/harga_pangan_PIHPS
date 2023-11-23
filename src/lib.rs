@@ -2,10 +2,10 @@ use serde::Deserialize;
 
 pub mod core {
     pub mod client;
+    pub mod parse_config;
     pub mod parse_date;
     pub mod parse_json;
     pub mod parse_url;
-    pub mod parse_config;
     pub mod path;
 }
 pub mod input {
@@ -18,7 +18,7 @@ pub mod data {
     pub mod constants;
 }
 
-#[allow(non_snake_case,dead_code)]
+#[allow(non_snake_case, dead_code)]
 #[derive(Deserialize, Debug)]
 pub struct ResultObjects {
     ProvID: i32,

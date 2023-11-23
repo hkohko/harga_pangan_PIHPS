@@ -1,10 +1,10 @@
 #![allow(dead_code, unused_variables)]
 use anyhow::Result;
 use get_prices::core::client::client_main;
+use get_prices::core::parse_config::parse_config;
 use get_prices::core::parse_date::parser;
 use get_prices::core::parse_json::parse_json_main;
 use get_prices::input::handle_input::input;
-use get_prices::core::parse_config::parse_config;
 
 fn main() {
     match stack() {

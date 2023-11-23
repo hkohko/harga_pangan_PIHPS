@@ -1,7 +1,7 @@
-use std::env;
 use anyhow::Result;
+use std::env;
 use std::fs;
-use std::io::{BufReader, prelude::*};
+use std::io::{prelude::*, BufReader};
 
 pub fn config_main() {
     if let Err(e) = parse_config() {
