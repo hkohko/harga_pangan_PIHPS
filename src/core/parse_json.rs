@@ -26,14 +26,14 @@ fn parse(prov: &String) -> Result<()> {
         if &obj.Provinsi == prov {
             let nilai_formatted = {
                 let to_u32 = obj.Nilai as u32;
-                to_u32.to_formatted_string(&Locale::en)
+                &to_u32.to_formatted_string(&Locale::en)
             };
             let to_print = format!("{} di {}:\nRp{}", &obj.Komoditas, &obj.Provinsi, &nilai_formatted);
             s.push_str(to_print.as_str())
         }
     }
     if s.len() != 0 {
-        println!("{s}")
+        println!("{}", &s)
     } else {
         println!("Tidak ada data.")
     }
