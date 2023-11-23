@@ -12,7 +12,7 @@ fn get_month(date: &HashMap<&str, u32>) -> Result<String> {
     // Get the first 3 letters of the month name "January" -> "Jan"
     Ok(month_name.chars().take(3).collect())
 }
-pub fn regex_url(url: &String, date: &HashMap<&str, u32>, cmdt_code: &String) -> Result<String> {
+pub fn regex_url(url: &str, date: &HashMap<&str, u32>, cmdt_code: &String) -> Result<String> {
     let d = date.get("d").unwrap().to_string();
     let m = get_month(date)?.to_string();
     let y = date.get("y").unwrap().to_string();

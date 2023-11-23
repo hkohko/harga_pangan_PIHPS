@@ -1,6 +1,7 @@
 #![allow(dead_code, unused_variables)]
 use crate::core::parse_url::regex_url;
 use crate::core::path::ProjPaths;
+use crate::data::constants::URL;
 use anyhow::{Context, Result};
 use reqwest::blocking;
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
@@ -16,24 +17,13 @@ pub fn client_main(date: &HashMap<&str, u32>, cmdt_code: &String) {
     }
 }
 fn process_client(date: &HashMap<&str, u32>, cmdt_code: &String) -> Result<()> {
-    let raw_url = get_url()?;
-    let url = regex_url(&raw_url, date, cmdt_code)?;
+    let url = regex_url(&URL, date, cmdt_code)?;
     let get_header = get_header()?;
     let header = build_header(&get_header)?;
     let client = build_client(header)?;
     let make_req = process_req(&client, &url)?;
     let _ = save_resp(make_req)?;
     Ok(())
-}
-fn get_url() -> Result<String> {
-    let filename = "url.txt";
-    let mut url = String::new();
-    let mut filepath = ProjPaths::res_path()?;
-    filepath.push(filename);
-    let f = fs::File::open(filepath).with_context(|| format!("Failed to open {}", filename))?;
-    let mut reader = BufReader::new(&f);
-    reader.read_to_string(&mut url)?;
-    Ok(url)
 }
 fn get_header() -> Result<serde_json::Value> {
     let filename = "header.json";
