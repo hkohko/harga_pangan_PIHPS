@@ -13,12 +13,17 @@ fn main() {
     }
 }
 fn stack() -> Result<()> {
+    let mut commodity_code = String::new();
     let cfg = parse_config()?;
     let input = input()?;
     let date_input = &input[0];
-    let commodity_code = &cfg[1];
+    if input[1].len() == 0 {
+        commodity_code.push_str(&cfg[1])
+    } else {
+        commodity_code.push_str(&input[1])
+    }
     let date = parser(date_input)?;
-    let client = client_main(&date, commodity_code);
+    let client = client_main(&date, &commodity_code);
     let _ = parse_json_main(&cfg[0]);
     Ok(())
 }
