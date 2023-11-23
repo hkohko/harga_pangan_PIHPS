@@ -5,6 +5,7 @@ pub mod core {
     pub mod parse_date;
     pub mod parse_json;
     pub mod parse_url;
+    pub mod parse_config;
     pub mod path;
 }
 pub mod input {
@@ -16,6 +17,8 @@ pub mod optional {
 pub mod data {
     pub mod constants;
 }
+
+#[allow(non_snake_case,dead_code)]
 #[derive(Deserialize, Debug)]
 pub struct ResultObjects {
     ProvID: i32,
@@ -29,7 +32,7 @@ pub struct ResultObjects {
     stdDev: f32,
     Percentage: f32,
     SemuaPercentage: f32,
-    stdDevPercentage: Option<String>,
+    stdDevPercentage: Option<f32>,
     TanggalLast: String,
     TanggalInflasi: String,
     show: bool,
