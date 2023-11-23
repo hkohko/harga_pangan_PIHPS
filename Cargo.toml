@@ -9,6 +9,7 @@ edition = "2021"
 anyhow = "1.0.75"
 chrono = "0.4.31"
 dateparser = "0.2.1"
+num-format = "0.4.4"
 regex = "1.10.2"
 reqwest = {version = "0.11.22", features = ["blocking"]}
 serde = { version = "1.0.192", features = ["derive"] }
